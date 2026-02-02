@@ -24,25 +24,7 @@ Plataforma web completa para eventos de comedia con votación en vivo, registro 
 
 ---
 
-## 🚀 Instalación Rápida
 
-```bash
-# Clonar repositorio
-git clone https://github.com/tu-usuario/comedy-battle.git
-cd comedy-battle
-
-# Instalar dependencias
-npm install
-
-# Iniciar servidor
-npm start
-
-# Abrir en navegador
-# Público: http://localhost:3000
-# Admin:   http://localhost:3000/admin
-```
-
----
 
 ## 📁 Estructura del Proyecto
 
@@ -61,11 +43,6 @@ comedy-battle/
 
 ## 🎯 Cómo Usar en tu Evento
 
-### Antes del Evento
-1. Andá a http://localhost:3000/admin → **Configuración**
-2. Agregá tus comediantes (o editá los de ejemplo)
-3. Generá un código QR con la URL pública
-4. Proyectá el QR en pantalla grande
 
 ### Durante el Evento
 1. **Público:** Escanea QR → Se registra → Vota por su favorito
