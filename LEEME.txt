@@ -1,0 +1,55 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║          📦 CARPETA LISTA PARA SUBIR A GIT                   ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+✅ 12 ARCHIVOS ESENCIALES - TODO LISTO
+
+📍 UBICACIÓN:
+   Comedy-battle-claude/subir-a-git/
+
+📂 ESTRUCTURA:
+
+subir-a-git/
+│
+├── 📄 .gitignore              ✅ Archivos a ignorar
+├── 📄 .env.example            ✅ Template variables
+├── 📄 package.json            ✅ Dependencias
+├── 📄 vercel.json             ✅ Config Vercel
+├── 📄 README.md               📖 Documentación
+├── 📄 DEPLOY-SIMPLE.md        📖 Guía deploy
+├── 📄 EXPORTAR-PDF.md         📖 Guía PDF
+├── 📄 INSTRUCCIONES.md        📖 Paso a paso
+├── 📄 ESTRUCTURA.txt          📋 Listado
+│
+├── 📁 api/
+│   └── index.js               🔧 Backend (6.4KB)
+│
+└── 📁 public/
+    ├── index.html             🌐 Público (20KB)
+    ├── admin.html             🔒 Admin (39KB)
+    └── resultados.html        📄 PDF (18KB)
+
+═══════════════════════════════════════════════════════════════
+
+🚀 SIGUIENTE PASO:
+
+1. Abrí tu terminal
+2. cd comedy-battle  (tu repo local)
+3. Copiá TODO de esta carpeta "subir-a-git" a tu repo
+4. Ejecutá:
+   
+   git add .
+   git commit -m "Comedy Battle - Clean version"
+   git push origin main
+
+5. Ve a https://vercel.com
+6. Import → comedy-battle → Deploy
+7. ¡Listo! 🎉
+
+═══════════════════════════════════════════════════════════════
+
+📖 LEE: INSTRUCCIONES.md para guía detallada
+
+═══════════════════════════════════════════════════════════════

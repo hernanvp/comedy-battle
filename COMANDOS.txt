@@ -1,0 +1,67 @@
+═══════════════════════════════════════════════════════════════
+  COMANDOS PARA COPIAR Y PEGAR (Windows/Mac/Linux)
+═══════════════════════════════════════════════════════════════
+
+1️⃣ SI YA TENÉS EL REPO "comedy-battle" EN GITHUB:
+───────────────────────────────────────────────────────────────
+
+# Abrí tu terminal y ejecutá:
+
+cd comedy-battle
+rm -rf *                          # Limpiar todo
+rm -rf .git                       # Empezar de cero (opcional)
+
+# Copiá TODO de la carpeta "subir-a-git" aquí
+
+git init
+git add .
+git commit -m "Comedy Battle - Clean version for Vercel"
+git branch -M main
+git remote add origin https://github.com/TU-USUARIO/comedy-battle.git
+git push -u origin main --force
+
+
+2️⃣ SI NO TENÉS REPO AÚN:
+───────────────────────────────────────────────────────────────
+
+# Crear carpeta nueva
+mkdir comedy-battle
+cd comedy-battle
+
+# Copiá TODO de la carpeta "subir-a-git" aquí
+
+# Inicializar Git
+git init
+git add .
+git commit -m "Initial commit - Comedy Battle"
+git branch -M main
+
+# Crear repo en GitHub primero, luego:
+git remote add origin https://github.com/TU-USUARIO/comedy-battle.git
+git push -u origin main
+
+
+3️⃣ DEPLOY EN VERCEL:
+───────────────────────────────────────────────────────────────
+
+1. Ve a: https://vercel.com
+2. Login con GitHub
+3. New Project
+4. Import "comedy-battle"
+5. Deploy (sin cambiar NADA)
+6. ¡Listo! 🎉
+
+
+4️⃣ VERIFICAR QUE FUNCIONA:
+───────────────────────────────────────────────────────────────
+
+Una vez deployado, probá estas URLs:
+
+https://tu-proyecto.vercel.app/api/health
+https://tu-proyecto.vercel.app/index.html
+https://tu-proyecto.vercel.app/admin.html
+
+
+═══════════════════════════════════════════════════════════════
+  NOTA: Reemplazá "TU-USUARIO" con tu usuario de GitHub
+═══════════════════════════════════════════════════════════════

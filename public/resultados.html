@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comedy Battle - Resultados Finales</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #0a0015 100%);
+            color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .print-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(255, 0, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .print-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(255, 0, 255, 0.7);
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+            }
+
+            .print-button {
+                display: none !important;
+            }
+
+            .report-header {
+                background: linear-gradient(135deg, #6e2c91 0%, #1a5490 100%) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .page-break {
+                page-break-after: always;
+            }
+
+            .stat-card, .ranking-card, .participant-card {
+                border: 2px solid #333 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .trophy {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* Report Header */
+        .report-header {
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+        }
+
+        .report-header h1 {
+            font-size: 3rem;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .report-header .subtitle {
+            font-size: 1.5rem;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .report-header .date {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: #000;
+            opacity: 0.8;
+        }
+
+        /* Statistics Grid */
+        .stats-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #00ffff;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffff00;
+            margin: 10px 0;
+            text-shadow: 0 0 20px #ffff00;
+        }
+
+        .stat-label {
+            color: #00ffff;
+            font-size: 1.2rem;
+        }
+
+        /* Ranking Section */
+        .ranking-section {
+            margin-bottom: 50px;
+        }
+
+        .podium {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            align-items: end;
+        }
+
+        .podium-card {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .podium-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .podium-card.first {
+            grid-column: 2;
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+        }
+
+        .podium-card.second {
+            grid-column: 1;
+            border: 3px solid #C0C0C0;
+            box-shadow: 0 0 30px rgba(192, 192, 192, 0.6);
+        }
+
+        .podium-card.third {
+            grid-column: 3;
+            border: 3px solid #CD7F32;
+            box-shadow: 0 0 30px rgba(205, 127, 50, 0.6);
+        }
+
+        .trophy {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .podium-card .name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .podium-card .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffff00;
+            margin: 10px 0;
+        }
+
+        .podium-card .details {
+            font-size: 1rem;
+            color: #00ffff;
+            margin-top: 10px;
+        }
+
+        /* Full Ranking Table */
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 30px;
+        }
+
+        .ranking-table th,
+        .ranking-table td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ranking-table th {
+            background: rgba(255, 0, 255, 0.3);
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .ranking-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ranking-table .position {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .ranking-table .comedian-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .ranking-table .score-cell {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffff00;
+        }
+
+        /* Participants Section */
+        .participants-section {
+            margin-bottom: 50px;
+        }
+
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .participant-card {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .participant-card .name {
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 5px;
+        }
+
+        .participant-card .email,
+        .participant-card .phone {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Footer */
+        .report-footer {
+            margin-top: 60px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            border: 2px solid #ff00ff;
+            text-align: center;
+        }
+
+        .report-footer p {
+            color: #00ffff;
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 100px;
+            font-size: 1.5rem;
+            color: #00ffff;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #ff00ff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .report-header h1 {
+                font-size: 2rem;
+            }
+
+            .podium {
+                grid-template-columns: 1fr;
+            }
+
+            .podium-card.first,
+            .podium-card.second,
+            .podium-card.third {
+                grid-column: 1;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="print-button" onclick="window.print()">🖨️ Exportar PDF</button>
+
+    <div class="container">
+        <div class="report-header">
+            <h1>🎤 COMEDY BATTLE 🎤</h1>
+            <div class="subtitle">Resultados Finales</div>
+            <div class="date" id="event-date">Fecha del evento</div>
+        </div>
+
+        <div id="content">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Cargando resultados...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin + '/api';
+
+        async function loadResults() {
+            try {
+                // Load all data
+                const [ranking, stats, allData] = await Promise.all([
+                    fetch(API_URL + '/ranking').then(r => r.json()),
+                    fetch(API_URL + '/stats').then(r => r.json()),
+                    fetch(API_URL + '/data').then(r => r.json())
+                ]);
+
+                // Set date
+                document.getElementById('event-date').textContent = new Date().toLocaleDateString('es-AR', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Build content
+                let html = '';
+
+                // Statistics Section
+                html += `
+                    <div class="stats-section">
+                        <h2 class="section-title">📊 Estadísticas del Evento</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">${stats.registrados}</div>
+                                <div class="stat-label">👥 Asistentes Registrados</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${stats.totalVotos}</div>
+                                <div class="stat-label">🗳️ Votos Totales</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${stats.maxGlobal} dB</div>
+                                <div class="stat-label">📢 Máximo de Aplausos</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${stats.comediantes}</div>
+                                <div class="stat-label">🎤 Comediantes</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Podium (Top 3)
+                if (ranking.length > 0) {
+                    html += `
+                        <div class="ranking-section">
+                            <h2 class="section-title">🏆 Podio Final</h2>
+                            <div class="podium">
+                    `;
+
+                    // First place
+                    if (ranking[0]) {
+                        html += `
+                            <div class="podium-card first">
+                                <div class="trophy">🥇</div>
+                                <div class="name">${ranking[0].name}</div>
+                                <div class="score">${ranking[0].score} pts</div>
+                                <div class="details">
+                                    ${ranking[0].votos} votos • ${ranking[0].maxdb || 0} dB
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    // Second place
+                    if (ranking[1]) {
+                        html += `
+                            <div class="podium-card second">
+                                <div class="trophy">🥈</div>
+                                <div class="name">${ranking[1].name}</div>
+                                <div class="score">${ranking[1].score} pts</div>
+                                <div class="details">
+                                    ${ranking[1].votos} votos • ${ranking[1].maxdb || 0} dB
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    // Third place
+                    if (ranking[2]) {
+                        html += `
+                            <div class="podium-card third">
+                                <div class="trophy">🥉</div>
+                                <div class="name">${ranking[2].name}</div>
+                                <div class="score">${ranking[2].score} pts</div>
+                                <div class="details">
+                                    ${ranking[2].votos} votos • ${ranking[2].maxdb || 0} dB
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    html += `
+                            </div>
+                    `;
+
+                    // Full ranking table
+                    html += `
+                            <h3 style="color: #00ffff; margin-top: 50px; margin-bottom: 20px; text-align: center;">Ranking Completo</h3>
+                            <table class="ranking-table">
+                                <thead>
+                                    <tr>
+                                        <th>Posición</th>
+                                        <th>Comediante</th>
+                                        <th>Votos</th>
+                                        <th>Max Aplausos</th>
+                                        <th>Score Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
+
+                    ranking.forEach((comedian, index) => {
+                        const trophy = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '';
+                        html += `
+                            <tr>
+                                <td class="position">${trophy} ${index + 1}°</td>
+                                <td class="comedian-name">${comedian.name}</td>
+                                <td>${comedian.votos}</td>
+                                <td>${comedian.maxdb || 0} dB</td>
+                                <td class="score-cell">${comedian.score}</td>
+                            </tr>
+                        `;
+                    });
+
+                    html += `
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                // Page break for print
+                html += '<div class="page-break"></div>';
+
+                // Participants Section (if any)
+                if (allData.registrados && allData.registrados.length > 0) {
+                    html += `
+                        <div class="participants-section">
+                            <h2 class="section-title">👥 Asistentes Registrados (${allData.registrados.length})</h2>
+                            <div class="participants-grid">
+                    `;
+
+                    allData.registrados.forEach(participant => {
+                        html += `
+                            <div class="participant-card">
+                                <div class="name">${participant.nombre}</div>
+                                <div class="email">📧 ${participant.email}</div>
+                                <div class="phone">📱 ${participant.telefono}</div>
+                            </div>
+                        `;
+                    });
+
+                    html += `
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Footer
+                html += `
+                    <div class="report-footer">
+                        <p>🎤 Comedy Battle - Plataforma de Eventos</p>
+                        <p>Fórmula de Puntuación: (Votos × 10) + Máximo de Aplausos (dB)</p>
+                        <p>Reporte generado el ${new Date().toLocaleString('es-AR')}</p>
+                    </div>
+                `;
+
+                // Insert content
+                document.getElementById('content').innerHTML = html;
+
+            } catch (error) {
+                console.error('Error loading results:', error);
+                document.getElementById('content').innerHTML = `
+                    <div style="text-align: center; color: #ff0000; padding: 50px;">
+                        <h2>❌ Error al cargar resultados</h2>
+                        <p>${error.message}</p>
+                        <p style="margin-top: 20px;">
+                            <a href="/admin.html" style="color: #00ffff;">← Volver al Admin</a>
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load results on page load
+        loadResults();
+
+        // Auto-print after a delay (optional, commented out)
+        // setTimeout(() => window.print(), 1000);
+    </script>
+</body>
+</html>

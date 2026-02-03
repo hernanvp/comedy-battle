@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comedy Battle 🎤 - Público</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #0a0015 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background effect */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .bg-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .neon-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .neon-circle:nth-child(1) {
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 0, 255, 0.3);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+
+        .neon-circle:nth-child(2) {
+            width: 300px;
+            height: 300px;
+            background: rgba(0, 255, 255, 0.3);
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 2s;
+        }
+
+        .neon-circle:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: rgba(255, 255, 0, 0.2);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 1s;
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid #ff00ff;
+            box-shadow: 0 4px 20px rgba(255, 0, 255, 0.5);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow:
+                0 0 10px #ff00ff,
+                0 0 20px #ff00ff,
+                0 0 30px #ff00ff,
+                0 0 40px #ff00ff;
+            animation: flicker 2s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow:
+                    0 0 10px #ff00ff,
+                    0 0 20px #ff00ff,
+                    0 0 30px #ff00ff,
+                    0 0 40px #ff00ff;
+            }
+            20%, 24%, 55% {
+                text-shadow:
+                    0 0 5px #ff00ff,
+                    0 0 10px #ff00ff,
+                    0 0 15px #ff00ff;
+            }
+        }
+
+        /* Navigation */
+        nav {
+            position: relative;
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            border: none;
+            border-radius: 25px;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(255, 0, 255, 0.7);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ffff00 0%, #ff00ff 100%);
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* Sections */
+        section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #00ffff;
+            text-shadow: 0 0 20px #00ffff;
+        }
+
+        /* Form styles */
+        .form-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid #ff00ff;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.5);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%);
+            border: none;
+            border-radius: 30px;
+            color: #000;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 0, 255, 0.8);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Comedians grid */
+        .comedians-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .comedian-card {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid #ff00ff;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .comedian-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px rgba(255, 0, 255, 0.6);
+            border-color: #00ffff;
+        }
+
+        .comedian-card.voted {
+            border-color: #ffff00;
+            box-shadow: 0 0 30px rgba(255, 255, 0, 0.8);
+        }
+
+        .comedian-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #00ffff;
+        }
+
+        .vote-count {
+            font-size: 1.5rem;
+            color: #ffff00;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        /* Success messages */
+        .success-message {
+            display: none;
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideDown 0.5s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading spinner */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.5rem;
+            color: #00ffff;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #ff00ff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+
+            .comedians-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-decoration">
+        <div class="neon-circle"></div>
+        <div class="neon-circle"></div>
+        <div class="neon-circle"></div>
+    </div>
+
+    <header>
+        <h1>🎤 Comedy Battle 🎤</h1>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" onclick="showSection('registro')">📝 Registro</button>
+        <button class="nav-btn" onclick="showSection('votacion')">🗳️ Votación</button>
+    </nav>
+
+    <div class="container">
+        <!-- Registration Section -->
+        <section id="registro" class="active">
+            <div class="form-container">
+                <h2 class="section-title">Registro de Asistentes</h2>
+
+                <div class="success-message" id="registro-success">
+                    <p>✅ ¡Registro exitoso! Bienvenido al Comedy Battle.</p>
+                </div>
+
+                <form id="registro-form">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo</label>
+                        <input type="text" id="nombre" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" placeholder="+54 9 11 1234-5678" required>
+                    </div>
+                    <button type="submit" class="btn">✨ Registrarme</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Voting Section -->
+        <section id="votacion">
+            <div class="form-container" style="max-width: 100%;">
+                <h2 class="section-title">Votá por tu Comediante Favorito</h2>
+
+                <div class="success-message" id="vote-success">
+                    <p>✅ ¡Voto registrado! Gracias por participar.</p>
+                </div>
+
+                <div class="comedians-grid" id="comedians-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Cargando comediantes...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_URL = window.location.origin + '/api';
+
+        // Session management
+        function getSessionId() {
+            let sessionId = localStorage.getItem('sessionId');
+            if (!sessionId) {
+                sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('sessionId', sessionId);
+            }
+            return sessionId;
+        }
+
+        function hasVoted() {
+            return localStorage.getItem('hasVoted') === 'true';
+        }
+
+        function markAsVoted() {
+            localStorage.setItem('hasVoted', 'true');
+        }
+
+        // API calls
+        async function apiRequest(endpoint, options = {}) {
+            try {
+                const response = await fetch(API_URL + endpoint, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    },
+                    ...options
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Error en la petición');
+                }
+
+                return data;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+
+        async function getComedians() {
+            return await apiRequest('/comedians');
+        }
+
+        async function getAllData() {
+            return await apiRequest('/data');
+        }
+
+        async function registerAttendee(nombre, email, telefono) {
+            return await apiRequest('/register', {
+                method: 'POST',
+                body: JSON.stringify({ nombre, email, telefono })
+            });
+        }
+
+        async function voteForComedian(comedianId) {
+            const sessionId = getSessionId();
+            return await apiRequest('/vote', {
+                method: 'POST',
+                body: JSON.stringify({ comedianId, sessionId })
+            });
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Remove active from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+
+            // Add active to clicked button
+            event.target.classList.add('active');
+
+            // Update displays if necessary
+            if (sectionId === 'votacion') {
+                renderComedians();
+            }
+        }
+
+        // Registration
+        document.getElementById('registro-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+
+            try {
+                await registerAttendee(nombre, email, telefono);
+
+                // Show success message
+                const successMsg = document.getElementById('registro-success');
+                successMsg.classList.add('show');
+
+                // Reset form
+                this.reset();
+
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 3000);
+
+                // Fire confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            } catch (error) {
+                alert('❌ Error al registrar: ' + error.message);
+            }
+        });
+
+        // Render comedians for voting
+        async function renderComedians() {
+            const container = document.getElementById('comedians-list');
+            container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Cargando comediantes...</p></div>';
+
+            try {
+                const data = await getAllData();
+                const comedians = data.comedians || [];
+
+                container.innerHTML = '';
+
+                if (comedians.length === 0) {
+                    container.innerHTML = '<p style="text-align: center; color: #ff0000;">No hay comediantes disponibles. Contactá al organizador.</p>';
+                    return;
+                }
+
+                const userHasVoted = hasVoted();
+                const sessionId = getSessionId();
+
+                comedians.forEach(comedian => {
+                    const card = document.createElement('div');
+                    card.className = 'comedian-card';
+
+                    const votes = data.votos[comedian.id] || 0;
+
+                    if (userHasVoted) {
+                        card.classList.add('voted');
+                    }
+
+                    card.innerHTML = `
+                        <div class="comedian-name">${comedian.name}</div>
+                        <div class="vote-count">${votes} voto${votes !== 1 ? 's' : ''}</div>
+                        ${userHasVoted ?
+                            '<p style="color: #ffff00;">✓ Ya votaste</p>' :
+                            '<button class="btn" style="margin-top: 10px;" onclick="vote(' + comedian.id + ')">Votar</button>'
+                        }
+                    `;
+
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                container.innerHTML = '<p style="text-align: center; color: #ff0000;">Error al cargar comediantes: ' + error.message + '</p>';
+            }
+        }
+
+        // Vote function
+        async function vote(comedianId) {
+            if (hasVoted()) {
+                alert('⚠️ Ya votaste! Solo se permite un voto por persona.');
+                return;
+            }
+
+            try {
+                await voteForComedian(comedianId);
+
+                markAsVoted();
+
+                // Show success message
+                const successMsg = document.getElementById('vote-success');
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.classList.remove('show');
+                }, 3000);
+
+                // Fire confetti
+                confetti({
+                    particleCount: 150,
+                    spread: 100,
+                    origin: { y: 0.6 },
+                    colors: ['#ff00ff', '#00ffff', '#ffff00']
+                });
+
+                // Re-render
+                renderComedians();
+            } catch (error) {
+                alert('❌ Error al votar: ' + error.message);
+            }
+        }
+
+        // Initialize on load
+        renderComedians();
+
+        // Auto-refresh vote counts every 5 seconds
+        setInterval(() => {
+            const votacionSection = document.getElementById('votacion');
+            if (votacionSection.classList.contains('active')) {
+                renderComedians();
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

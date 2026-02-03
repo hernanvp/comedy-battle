@@ -1,0 +1,38 @@
+📦 CARPETA: subir-a-git
+════════════════════════════════════════════════════
+
+✅ ARCHIVOS LISTOS PARA GIT (12 archivos, 85KB total)
+
+📁 Raíz (7 archivos):
+├── .env.example              (template de variables)
+├── .gitignore                (archivos a ignorar)
+├── package.json              (dependencias del proyecto)
+├── vercel.json               (configuración Vercel)
+├── DEPLOY-SIMPLE.md          (guía de deployment)
+├── EXPORTAR-PDF.md           (guía de exportación PDF)
+├── INSTRUCCIONES.md          (este archivo de ayuda)
+└── README.md                 (documentación principal)
+
+📁 api/ (1 archivo):
+└── index.js                  (Backend API - 6.4KB)
+
+📁 public/ (3 archivos):
+├── index.html                (Página pública - 20KB)
+├── admin.html                (Panel admin - 39KB)
+└── resultados.html           (Reporte PDF - 18KB)
+
+════════════════════════════════════════════════════
+
+🚀 SIGUIENTE PASO:
+
+1. Copiá TODO el contenido de esta carpeta
+2. Pegalo en tu repositorio local
+3. Ejecutá:
+   git add .
+   git commit -m "Comedy Battle - Ready for Vercel"
+   git push origin main
+
+4. Deploy en Vercel:
+   https://vercel.com → Import → comedy-battle → Deploy
+
+════════════════════════════════════════════════════
